@@ -1,0 +1,36 @@
+20241130-mysqlinit
+
+1. 유저생성
+CREATE USER 'SAM1'@'%' IDENTIFIED BY 'PA1';
+참고로 다른 접속위치에 따라 비번 다르게 가능하다고 함.
+CREATE USER 'SAM1'@'localhost' IDENTIFIED BY 'PASS1';
+CREATE USER 'SAM1'@'111.111.111.111' IDENTIFIED BY 'PASS2';
+CREATE USER 'SAM1'@'222.222.222.222' IDENTIFIED BY 'PASS3';
+
+2. 데이터베이스 생성
+CREATE DATABASE SK;
+
+3. 데이터베이스에 유저사용권한 부여
+GRANT ALL PRIVILEGES ON SK.* TO 'SAM1'@'%';
+
+4. 데이터베이스에서 유저에게 DDL, DCL 권한 부여
+GRANT CREATE, ALTER, DROP, GRANT OPTION ON SK.* TO 'SAM1'@'%';
+
+5. 데이터베이스에서 유저에게 DML 권한 부여
+GRANT SELECT, INSERT, UPDATE, DELETE ON SK.* TO 'SAM1'@'%';
+
+6. 데이터베이스에서 유저에게 외래키를 사용하고, 참조하는 권한 부여
+GRANT REFERENCES ON SK.* TO 'SAM1'@'%';
+
+7. 권한설정 모두 저장
+FLUSH PRIVILEGES;
+
+** MYSQL 콘솔에서 특정 유저로 사용
+mysql -u user1 -p 이후 패스워드 입력
+
+특정 IP에서 접속
+mysql -u user1 -p -h 111.111.111.111;
+
+특정 데이터베이스 접속
+mysql -u user1 -p SK;
+
