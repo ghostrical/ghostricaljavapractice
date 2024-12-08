@@ -1,0 +1,1024 @@
+20241208-j799
+
+@FunctionalInterface
+interface MyFunction {
+    void run();
+}
+
+public class LambdaEx1 {
+    static void execute(MyFunction f){
+        f.run();
+    }
+
+    static MyFunction getMyFunction() {
+        MyFunction f = () -> System.out.println("f3.run()");
+        return f;
+    }
+
+    public static void main(String[] args){
+        MyFunction f1 = () -> System.out.println("f1.run()");
+
+        MyFunction f2 = new MyFunction() {
+            @Override
+            public void run() {
+                System.out.println("f2.run()");
+            }
+        };
+
+        MyFunction f3 = getMyFunction();
+
+        f1.run();
+        f2.run();
+        f3.run();
+
+        execute(f1);
+        execute(() -> System.out.println("run()"));
+    }
+}
+
+하나하나 해석해라
+ChatGPT의 말:
+ChatGPT
+코드를 차례대로 분석하고 설명해 줄게요.
+
+1. MyFunction 인터페이스 정의
+java
+코드 복사
+@FunctionalInterface
+interface MyFunction {
+    void run();
+}
+@FunctionalInterface: 하나의 추상 메서드만 가지는 인터페이스임을 명시합니다. 이를 통해 람다 표현식에서 사용 가능합니다.
+run() 메서드는 구현해야 하는 유일한 메서드입니다.
+이 인터페이스는 람다식이나 익명 클래스를 통해 쉽게 구현할 수 있는 형식입니다.
+2. LambdaEx1 클래스 정의
+java
+코드 복사
+public class LambdaEx1 {
+    ...
+}
+LambdaEx1 클래스 안에 여러 정적 메서드와 메인 메서드가 정의되어 있습니다.
+
+3. execute 메서드
+java
+코드 복사
+static void execute(MyFunction f) {
+    f.run();
+}
+MyFunction 타입의 객체를 매개변수로 받아서 run() 메서드를 호출합니다.
+람다식이나 익명 클래스의 동작을 전달받아 실행하는 데 사용됩니다.
+4. getMyFunction 메서드
+java
+코드 복사
+static MyFunction getMyFunction() {
+    MyFunction f = () -> System.out.println("f3.run()");
+    return f;
+}
+이 메서드는 MyFunction 인터페이스를 구현한 객체를 반환합니다.
+반환된 객체는 람다식으로 정의된 f3.run() 동작을 가집니다.
+5. main 메서드
+java
+코드 복사
+public static void main(String[] args) {
+    ...
+}
+a) f1 정의
+java
+코드 복사
+MyFunction f1 = () -> System.out.println("f1.run()");
+람다식을 사용하여 MyFunction 인터페이스를 구현했습니다.
+f1.run() 호출 시, "f1.run()"이 출력됩니다.
+b) f2 정의
+java
+코드 복사
+MyFunction f2 = new MyFunction() {
+    @Override
+    public void run() {
+        System.out.println("f2.run()");
+    }
+};
+익명 클래스를 사용해 MyFunction 인터페이스를 구현했습니다.
+f2.run() 호출 시, "f2.run()"이 출력됩니다.
+c) f3 정의
+java
+코드 복사
+MyFunction f3 = getMyFunction();
+getMyFunction() 메서드를 호출하여 반환된 MyFunction 객체를 f3에 할당합니다.
+f3.run() 호출 시, "f3.run()"이 출력됩니다.
+d) 메서드 호출
+java
+코드 복사
+f1.run();
+f2.run();
+f3.run();
+f1.run() → "f1.run()" 출력.
+f2.run() → "f2.run()" 출력.
+f3.run() → "f3.run()" 출력.
+e) execute 메서드 호출
+java
+코드 복사
+execute(f1);
+execute(() -> System.out.println("run()"));
+execute(f1)
+
+f1.run()이 실행되며 "f1.run()" 출력.
+execute(() -> System.out.println("run()"))
+
+람다식을 직접 전달하여 run() 실행.
+"run()" 출력.
+전체 실행 결과
+scss
+코드 복사
+f1.run()
+f2.run()
+f3.run()
+f1.run()
+run()
+요약
+@FunctionalInterface는 람다 표현식이나 익명 클래스를 간단히 사용할 수 있게 해줍니다.
+execute와 같은 메서드는 함수형 프로그래밍에서 동작(람다식)을 파라미터로 전달받아 실행할 수 있게 합니다.
+f1, f2, f3는 각각 다른 방식으로 MyFunction 인터페이스를 구현했지만 모두 run() 메서드를 호출할 수 있습니다.
+
+
+
+
+
+나의 말:
+그럼 
+@FunctionalInterface
+interface MyFunction2 {
+    void myMethod();
+}
+
+public class LambdaEx2 {
+    public static void main(String[] args){
+        MyFunction2 f = () -> {};
+        Object obj = (MyFunction2) (() -> {});
+        String str = ((Object) (MyFunction2) (() -> {})).toString();
+
+        System.out.println(f);
+        System.out.println(obj);
+        System.out.println(str);
+
+        System.out.println((MyFunction2) (() -> {}));
+        System.out.println(((Object) (MyFunction2)() -> {}).toString() );
+    }
+}
+을 해석해라
+ChatGPT의 말:
+ChatGPT
+주어진 코드를 분석하고 실행 결과를 예측해 볼게요.
+
+코드 분석
+1. MyFunction2 인터페이스 정의
+java
+코드 복사
+@FunctionalInterface
+interface MyFunction2 {
+    void myMethod();
+}
+@FunctionalInterface: 함수형 인터페이스임을 명시합니다.
+유일한 추상 메서드 myMethod()를 구현해야 합니다.
+2. LambdaEx2 클래스 정의
+java
+코드 복사
+public class LambdaEx2 {
+    public static void main(String[] args) {
+        ...
+    }
+}
+이 클래스는 함수형 인터페이스를 구현한 람다식과 객체를 다루며, 각 객체를 출력합니다.
+
+3. f 정의
+java
+코드 복사
+MyFunction2 f = () -> {};
+f는 MyFunction2를 구현한 람다식입니다.
+구현 내용이 비어 있으므로 f.myMethod() 호출 시 아무 동작도 하지 않습니다.
+4. obj 정의
+java
+코드 복사
+Object obj = (MyFunction2) (() -> {});
+MyFunction2 타입의 람다식을 Object 타입으로 변환했습니다.
+Object 타입이므로 toString(), equals(), hashCode() 등의 메서드를 사용할 수 있습니다.
+5. str 정의
+java
+코드 복사
+String str = ((Object) (MyFunction2) (() -> {})).toString();
+MyFunction2 람다식을 Object로 변환한 뒤, toString() 메서드를 호출하여 문자열로 변환합니다.
+toString()의 출력값은 JVM이 생성한 람다식 객체의 메타데이터를 포함한 문자열입니다.
+6. 출력문
+a) System.out.println(f);
+f의 toString()이 호출됩니다.
+출력값은 JVM 구현에 따라 달라지지만 보통 다음과 같이 출력됩니다:
+ruby
+코드 복사
+LambdaEx2$$Lambda$1/0x0000000800c01234@6d06d69c
+b) System.out.println(obj);
+obj의 toString()이 호출됩니다.
+obj는 f와 동일한 람다식을 참조하므로 출력 결과는 f와 동일합니다.
+c) System.out.println(str);
+str은 (Object)(MyFunction2)(() -> {}).toString()의 결과입니다.
+결과적으로 f와 동일한 람다식의 toString() 결과 문자열을 출력합니다.
+d) System.out.println((MyFunction2) (() -> {}));
+새로운 람다식을 출력하며, toString()이 호출됩니다.
+새로운 람다식이므로 출력되는 식별자는 이전과 다릅니다.
+e) System.out.println(((Object) (MyFunction2) (() -> {})).toString());
+이전 출력과 동일한 람다식에 대해 toString()을 명시적으로 호출한 결과를 출력합니다.
+실행 결과 예측
+(실제 결과는 JVM 구현에 따라 달라질 수 있습니다.)
+
+ruby
+코드 복사
+LambdaEx2$$Lambda$1/0x0000000800c01234@6d06d69c
+LambdaEx2$$Lambda$1/0x0000000800c01234@6d06d69c
+LambdaEx2$$Lambda$1/0x0000000800c01234@6d06d69c
+LambdaEx2$$Lambda$2/0x0000000800c01234@7852e922
+LambdaEx2$$Lambda$3/0x0000000800c01234@4e25154f
+요약
+람다식은 JVM이 내부적으로 클래스를 생성하고 객체로 관리합니다.
+toString()은 JVM이 생성한 람다식 객체의 메타데이터를 반환하며, 패키지 경로와 해시코드 등을 포함합니다.
+새로운 람다식을 생성할 때마다 다른 객체가 생성되므로 출력 결과가 달라집니다.
+
+
+
+
+
+나의 말:
+야 그러면
+
+
+@FunctionalInterface
+interface MyFunction3 {
+    void myMethod();
+}
+
+class Outer {
+    int val=10;
+
+    class Inner {
+        int val = 20;
+
+        void method(int i){
+            int val=30;
+
+            MyFunction3 f = () -> {
+                System.out.println(" i : "+i);
+                System.out.println(" val : "+val);
+                System.out.println(" this.val : "+this.val);
+                System.out.println(" Outer.this.val : "+Outer.this.val);
+            };
+
+            f.myMethod();
+        }
+    }
+}
+
+public class LambdaEx3 {
+    public static void main(String[] args){
+        Outer outer = new Outer();
+        Outer.Inner inner = outer.new Inner();
+        inner.method(100);
+    }
+}
+ChatGPT의 말:
+ChatGPT
+주어진 코드를 분석하면서 하나씩 설명할게요.
+
+코드 분석
+1. MyFunction3 인터페이스
+java
+코드 복사
+@FunctionalInterface
+interface MyFunction3 {
+    void myMethod();
+}
+함수형 인터페이스로, void myMethod()라는 추상 메서드 하나만 가집니다.
+람다식에서 구현될 예정입니다.
+2. Outer 클래스
+java
+코드 복사
+class Outer {
+    int val = 10;
+
+    class Inner {
+        int val = 20;
+
+        void method(int i) {
+            int val = 30;
+
+            MyFunction3 f = () -> {
+                ...
+            };
+
+            f.myMethod();
+        }
+    }
+}
+Outer 클래스는 중첩 클래스 Inner를 포함합니다.
+각 클래스와 메서드에서 동일한 이름의 변수 val이 정의되어 변수 shadowing이 발생합니다.
+람다식 안에서는 이 변수들을 명시적으로 구분해서 접근할 수 있습니다.
+3. Inner.method 메서드
+java
+코드 복사
+void method(int i) {
+    int val = 30;
+
+    MyFunction3 f = () -> {
+        System.out.println(" i : " + i);
+        System.out.println(" val : " + val);
+        System.out.println(" this.val : " + this.val);
+        System.out.println(" Outer.this.val : " + Outer.this.val);
+    };
+
+    f.myMethod();
+}
+변수와 영역 설명
+i: 메서드 매개변수 (값: 100).
+val: method 내부의 지역 변수 (값: 30).
+지역 변수는 람다식에서 참조할 때 암묵적으로 final로 간주되므로 수정 불가.
+this.val: Inner 클래스의 인스턴스 변수 (값: 20).
+람다식에서 this는 Inner 클래스의 인스턴스를 가리킴.
+Outer.this.val: Outer 클래스의 인스턴스 변수 (값: 10).
+명시적으로 Outer.this를 사용해 상위 클래스의 인스턴스 변수에 접근.
+4. LambdaEx3 클래스
+java
+코드 복사
+public class LambdaEx3 {
+    public static void main(String[] args) {
+        Outer outer = new Outer();           // `Outer` 클래스의 인스턴스 생성
+        Outer.Inner inner = outer.new Inner(); // `Inner` 클래스의 인스턴스 생성
+        inner.method(100);                   // `Inner` 클래스의 `method` 호출
+    }
+}
+Outer의 인스턴스를 생성한 뒤, 이를 통해 Inner 클래스의 인스턴스를 생성합니다.
+Inner.method(100)을 호출하면 람다식이 실행됩니다.
+실행 흐름
+method 호출 시 i = 100, 지역 변수 val = 30이 선언됩니다.
+람다식은 다음 변수를 출력합니다:
+i: 메서드의 매개변수 (값: 100).
+val: method의 지역 변수 (값: 30).
+this.val: Inner 클래스의 인스턴스 변수 (값: 20).
+Outer.this.val: Outer 클래스의 인스턴스 변수 (값: 10).
+실행 결과
+kotlin
+코드 복사
+ i : 100
+ val : 30
+ this.val : 20
+ Outer.this.val : 10
+주요 포인트
+람다식에서의 변수 접근
+
+람다식은 변수 shadowing이 발생할 경우, 명시적으로 접근할 변수의 범위를 지정해야 합니다.
+지역 변수(val) → this.val (Inner 클래스) → Outer.this.val (Outer 클래스) 순으로 범위를 좁혀나갑니다.
+지역 변수의 암묵적 final
+
+람다식에서 참조하는 지역 변수는 변경할 수 없습니다. 이는 람다식이 실행될 때 해당 변수가 유효한 상태임을 보장하기 위함입니다.
+this 참조
+
+람다식 내부에서 this는 람다식이 선언된 클래스(여기서는 Inner)를 가리킵니다.
+
+
+
+
+
+나의 말:
+야 그러면
+public class LambdaEx4 {
+    public static void main(String[] args){
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0; i <10; i++){
+            list.add(i);
+        }
+
+        list.forEach(i -> System.out.print(i+","));
+        System.out.println();
+
+        list.removeIf(x -> x%2==0 || x%3==0);
+        System.out.println(list);
+
+        list.replaceAll(i->i*10);
+        System.out.println(list);
+
+        Map<String, String> map = new HashMap<>();
+        map.put("1","1");
+        map.put("2","2");
+        map.put("3","3");
+        map.put("4","4");
+
+        map.forEach((k,v) -> System.out.print("{"+k+","+v+"},"));
+        System.out.println();
+    }
+}
+을 하나하나 해석해봐
+ChatGPT의 말:
+ChatGPT
+주어진 코드를 분석하고 각 부분을 상세히 설명하겠습니다.
+
+코드 분석
+1. main 메서드
+a) ArrayList<Integer> 생성
+java
+코드 복사
+ArrayList<Integer> list = new ArrayList<>();
+for (int i = 0; i < 10; i++) {
+    list.add(i);
+}
+ArrayList 객체 list를 생성합니다.
+for 루프를 통해 0부터 9까지의 값을 리스트에 추가합니다.
+결과: list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+b) forEach 메서드로 출력
+java
+코드 복사
+list.forEach(i -> System.out.print(i + ","));
+System.out.println();
+forEach 메서드는 리스트의 각 요소를 순회하며, 람다식을 통해 작업을 수행합니다.
+람다식 i -> System.out.print(i + ",")는 각 요소를 출력하고, 출력 뒤에 ,를 붙입니다.
+출력:
+
+코드 복사
+0,1,2,3,4,5,6,7,8,9,
+c) removeIf 메서드로 요소 삭제
+java
+코드 복사
+list.removeIf(x -> x % 2 == 0 || x % 3 == 0);
+removeIf 메서드는 조건에 맞는 요소를 리스트에서 제거합니다.
+조건 x % 2 == 0 || x % 3 == 0:
+x가 2의 배수이거나 3의 배수인 경우 요소를 제거합니다.
+결과: list = [1, 5, 7]
+(0, 2, 3, 4, 6, 8, 9는 제거됨)
+
+d) replaceAll 메서드로 값 수정
+java
+코드 복사
+list.replaceAll(i -> i * 10);
+replaceAll 메서드는 리스트의 각 요소를 람다식 결과로 대체합니다.
+람다식 i -> i * 10은 각 요소에 10을 곱합니다.
+결과: list = [10, 50, 70]
+
+출력:
+
+csharp
+코드 복사
+[10, 50, 70]
+2. HashMap<String, String> 생성
+a) HashMap 초기화
+java
+코드 복사
+Map<String, String> map = new HashMap<>();
+map.put("1", "1");
+map.put("2", "2");
+map.put("3", "3");
+map.put("4", "4");
+HashMap 객체 map을 생성합니다.
+키-값 쌍 "1"="1", "2"="2", "3"="3", "4"="4"을 추가합니다.
+결과: map = {"1"="1", "2"="2", "3"="3", "4"="4"}
+
+b) forEach 메서드로 키-값 출력
+java
+코드 복사
+map.forEach((k, v) -> System.out.print("{" + k + "," + v + "},"));
+System.out.println();
+forEach 메서드는 HashMap의 각 키-값 쌍을 순회합니다.
+람다식 (k, v) -> System.out.print("{" + k + "," + v + "},")는 키-값 쌍을 출력합니다.
+출력:
+
+코드 복사
+{1,1},{2,2},{3,3},{4,4},
+실행 결과 요약
+csharp
+코드 복사
+0,1,2,3,4,5,6,7,8,9,
+[1, 5, 7]
+[10, 50, 70]
+{1,1},{2,2},{3,3},{4,4},
+주요 포인트
+forEach
+
+컬렉션 또는 맵의 각 요소를 순회하며 람다식으로 작업 수행.
+리스트에서는 요소, 맵에서는 (key, value) 형태로 전달.
+removeIf
+
+조건에 맞는 리스트 요소를 제거.
+사용된 조건식: x % 2 == 0 || x % 3 == 0.
+replaceAll
+
+리스트의 각 요소를 주어진 람다식 결과로 대체.
+사용된 람다식: i -> i * 10.
+HashMap.forEach
+
+맵의 키-값 쌍을 순회하며 작업 수행.
+(k, v)는 키와 값을 의미.
+
+
+
+
+
+나의 말:
+야
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+public class LambdaEx5 {
+    public static void main(String[] args){
+        Supplier<Integer> s = () -> (int)(Math.random()*100)+1;
+        Consumer<Integer> c = i -> System.out.print(i+", ");
+        Predicate<Integer> p = i -> i%2==0;
+        Function<Integer, Integer> f = i -> i/10*10;
+
+        List<Integer> list = new ArrayList<>();
+        makeRandomList(s, list);
+    }
+    
+    static <T> List<T> doSomething(Function<T, T> f, List<T> list){
+        List<T> newList = new ArrayList<T>(list.size());
+        
+        for(T i : list){
+            newList.add(f.apply(i));
+        }
+        
+        return newList;
+    }
+    
+    static <T> void printEvenNum(Predicate<T> p, Consumer<T> c, List<T> list) {
+        System.out.print("[");
+        for(T i : list){
+            if(p.test(i)) c.accept(i);
+        }
+        System.out.println("]");
+    }
+    
+    static <T> void makeRandomList(Supplier<T> s, List<T> list){
+        for(int i = 0; i < 10; i++){
+            list.add(s.get());
+        }
+    }
+
+}
+
+하나하나 해석해라
+ChatGPT의 말:
+ChatGPT
+주어진 코드를 분석하면서 한 줄씩 상세히 해석하겠습니다.
+
+코드 구조
+이 코드는 Supplier, Consumer, Predicate, Function과 같은 자바의 기본 함수형 인터페이스를 활용한 다양한 작업을 보여줍니다. 주요 기능은 랜덤 리스트 생성, 짝수 필터링, 값 변환입니다.
+
+1. main 메서드
+java
+코드 복사
+Supplier<Integer> s = () -> (int)(Math.random() * 100) + 1;
+Supplier는 값을 공급하는 함수형 인터페이스입니다.
+s.get() 호출 시 1부터 100 사이의 랜덤 정수를 반환합니다.
+java
+코드 복사
+Consumer<Integer> c = i -> System.out.print(i + ", ");
+Consumer는 값을 소비(사용)하는 함수형 인터페이스입니다.
+c.accept(i) 호출 시 값을 출력합니다.
+java
+코드 복사
+Predicate<Integer> p = i -> i % 2 == 0;
+Predicate는 조건을 테스트하는 함수형 인터페이스입니다.
+p.test(i) 호출 시 값이 짝수인지 검사합니다.
+java
+코드 복사
+Function<Integer, Integer> f = i -> i / 10 * 10;
+Function은 값을 변환하는 함수형 인터페이스입니다.
+f.apply(i) 호출 시 입력값 i를 가장 가까운 10의 배수로 변환합니다.
+java
+코드 복사
+List<Integer> list = new ArrayList<>();
+정수를 저장할 리스트 list를 생성합니다.
+java
+코드 복사
+makeRandomList(s, list);
+Supplier를 활용해 리스트에 랜덤 정수 10개를 추가합니다.
+2. makeRandomList 메서드
+java
+코드 복사
+static <T> void makeRandomList(Supplier<T> s, List<T> list) {
+    for (int i = 0; i < 10; i++) {
+        list.add(s.get());
+    }
+}
+제네릭 메서드로, Supplier를 이용해 리스트에 요소를 추가합니다.
+10번 반복하여 s.get()을 호출하고 반환된 값을 리스트에 추가합니다.
+실행 결과 (예시): list = [73, 25, 86, 41, 9, 14, 58, 34, 62, 17]
+
+3. doSomething 메서드
+java
+코드 복사
+static <T> List<T> doSomething(Function<T, T> f, List<T> list) {
+    List<T> newList = new ArrayList<>(list.size());
+    for (T i : list) {
+        newList.add(f.apply(i));
+    }
+    return newList;
+}
+제네릭 메서드로, 리스트의 모든 요소에 Function을 적용하여 새로운 리스트를 생성합니다.
+f.apply(i)를 호출해 리스트의 각 요소를 변환한 뒤 새 리스트에 추가합니다.
+예시:
+
+입력 리스트: [73, 25, 86]
+변환 함수: i -> i / 10 * 10 (10의 배수로 변환)
+결과 리스트: [70, 20, 80]
+4. printEvenNum 메서드
+java
+코드 복사
+static <T> void printEvenNum(Predicate<T> p, Consumer<T> c, List<T> list) {
+    System.out.print("[");
+    for (T i : list) {
+        if (p.test(i)) c.accept(i);
+    }
+    System.out.println("]");
+}
+제네릭 메서드로, 리스트의 요소를 필터링하고 출력합니다.
+Predicate로 조건(짝수)을 테스트하고, 조건을 만족하는 요소를 Consumer로 출력합니다.
+예시:
+
+입력 리스트: [73, 25, 86, 41, 9, 14]
+짝수 필터: p = i -> i % 2 == 0
+출력: [86, 14]
+전체 코드 실행 흐름
+리스트 생성 및 랜덤 값 추가
+
+java
+코드 복사
+makeRandomList(s, list);
+랜덤 정수 10개를 리스트에 추가합니다.
+예: list = [73, 25, 86, 41, 9, 14, 58, 34, 62, 17]
+짝수 출력
+
+java
+코드 복사
+printEvenNum(p, c, list);
+Predicate로 짝수를 필터링하고, Consumer로 출력합니다.
+출력: [86, 14, 58, 34, 62]
+값 변환
+
+java
+코드 복사
+List<Integer> newList = doSomething(f, list);
+리스트의 요소를 Function으로 변환해 새 리스트를 생성합니다.
+예: newList = [70, 20, 80, 40, 0, 10, 50, 30, 60, 10]
+주요 포인트
+함수형 인터페이스 활용
+
+Supplier: 값 생성 (Math.random으로 랜덤 값 생성).
+Consumer: 값 소비 (System.out.print로 출력).
+Predicate: 조건 테스트 (짝수 여부 검사).
+Function: 값 변환 (10의 배수로 변환).
+제네릭 메서드
+
+makeRandomList, doSomething, printEvenNum은 제네릭을 사용해 다양한 타입을 처리할 수 있습니다.
+코드 구조
+
+각 작업이 독립적인 메서드로 분리되어 재사용성이 높고 가독성이 좋습니다.
+
+
+
+
+
+나의 말:
+야
+
+public class LambdaEx6 {
+    public static void main(String[] args){
+        IntSupplier s = () -> (int)(Math.random()*100)+1;
+        IntConsumer c = i -> System.out.print(i+", ");
+        IntPredicate p = i -> i%2==0;
+        IntUnaryOperator op = i -> i/10*10; 
+        
+        int[] arr = new int[10];
+        
+        makeRandomList(s, arr);
+        System.out.println(Arrays.toString(arr));
+        printEvenNum(p, c, arr);
+        int[] newArr = doSomething(op, arr);
+        System.out.println(Arrays.toString(newArr));
+    }
+    
+    static void makeRandomList(IntSupplier s, int[] arr){
+        for(int i=0; i<arr.length; i++){
+            arr[i] = s.getAsInt();
+        }
+    }
+    
+    static void printEvenNum(IntPredicate p, IntConsumer c, int[] arr){
+        System.out.print("[");
+        for(int i : arr){
+            if(p.test(i)) c.accept(i);
+        }
+        System.out.println("]");
+    }
+    
+    static int[] doSomething(IntUnaryOperator op, int[] arr){
+        int[] newArr = new int[arr.length];
+        
+        for(int i=0; i<newArr.length; i++) newArr[i] = op.applyAsInt(arr[i]);
+        
+        return newArr;
+    }
+}
+
+하나하나 해석해라
+ChatGPT의 말:
+ChatGPT
+이 코드는 IntSupplier, IntConsumer, IntPredicate, IntUnaryOperator 등 기본 제공 프리미티브 함수형 인터페이스를 활용하여 정수 배열에 다양한 작업을 수행합니다. 하나씩 해석하겠습니다.
+
+코드 분석
+1. main 메서드
+a) IntSupplier 정의
+java
+코드 복사
+IntSupplier s = () -> (int)(Math.random() * 100) + 1;
+**IntSupplier**는 getAsInt() 메서드를 통해 정수를 공급하는 함수형 인터페이스입니다.
+s.getAsInt() 호출 시 1부터 100 사이의 랜덤 정수를 반환합니다.
+b) IntConsumer 정의
+java
+코드 복사
+IntConsumer c = i -> System.out.print(i + ", ");
+**IntConsumer**는 정수를 소비(사용)하는 함수형 인터페이스입니다.
+c.accept(i) 호출 시 정수를 출력합니다.
+c) IntPredicate 정의
+java
+코드 복사
+IntPredicate p = i -> i % 2 == 0;
+**IntPredicate**는 정수 조건을 테스트하는 함수형 인터페이스입니다.
+p.test(i) 호출 시 i가 짝수인지 검사합니다.
+d) IntUnaryOperator 정의
+java
+코드 복사
+IntUnaryOperator op = i -> i / 10 * 10;
+**IntUnaryOperator**는 정수를 받아 변환한 정수를 반환하는 함수형 인터페이스입니다.
+op.applyAsInt(i) 호출 시 입력값 i를 가장 가까운 10의 배수로 변환합니다.
+e) 정수 배열 생성
+java
+코드 복사
+int[] arr = new int[10];
+길이가 10인 정수 배열 arr를 생성합니다.
+초기값은 0으로 채워져 있습니다.
+f) makeRandomList 메서드 호출
+java
+코드 복사
+makeRandomList(s, arr);
+IntSupplier를 이용하여 배열을 랜덤 값으로 초기화합니다.
+실행 결과 (예시): arr = [73, 25, 86, 41, 9, 14, 58, 34, 62, 17]
+
+g) 배열 출력
+java
+코드 복사
+System.out.println(Arrays.toString(arr));
+배열의 내용을 문자열로 출력합니다.
+출력 (예시):
+
+csharp
+코드 복사
+[73, 25, 86, 41, 9, 14, 58, 34, 62, 17]
+h) printEvenNum 메서드 호출
+java
+코드 복사
+printEvenNum(p, c, arr);
+배열에서 짝수를 필터링하고 출력합니다.
+IntPredicate로 짝수 필터링, IntConsumer로 출력.
+출력 (예시):
+
+csharp
+코드 복사
+[86, 14, 58, 34, 62, ]
+i) doSomething 메서드 호출
+java
+코드 복사
+int[] newArr = doSomething(op, arr);
+배열의 각 요소를 IntUnaryOperator로 변환하여 새로운 배열을 생성합니다.
+결과 (예시): newArr = [70, 20, 80, 40, 0, 10, 50, 30, 60, 10]
+
+j) 새 배열 출력
+java
+코드 복사
+System.out.println(Arrays.toString(newArr));
+변환된 배열을 출력합니다.
+출력 (예시):
+
+csharp
+코드 복사
+[70, 20, 80, 40, 0, 10, 50, 30, 60, 10]
+2. makeRandomList 메서드
+java
+코드 복사
+static void makeRandomList(IntSupplier s, int[] arr) {
+    for (int i = 0; i < arr.length; i++) {
+        arr[i] = s.getAsInt();
+    }
+}
+배열의 각 요소를 랜덤 정수로 채웁니다.
+IntSupplier의 getAsInt()를 호출해 랜덤 값을 생성하고 배열에 추가합니다.
+3. printEvenNum 메서드
+java
+코드 복사
+static void printEvenNum(IntPredicate p, IntConsumer c, int[] arr) {
+    System.out.print("[");
+    for (int i : arr) {
+        if (p.test(i)) c.accept(i);
+    }
+    System.out.println("]");
+}
+배열의 요소를 순회하며 짝수인지 검사(IntPredicate).
+조건에 맞는 요소를 출력(IntConsumer).
+4. doSomething 메서드
+java
+코드 복사
+static int[] doSomething(IntUnaryOperator op, int[] arr) {
+    int[] newArr = new int[arr.length];
+    for (int i = 0; i < newArr.length; i++) {
+        newArr[i] = op.applyAsInt(arr[i]);
+    }
+    return newArr;
+}
+배열의 각 요소를 변환한 뒤 새로운 배열을 반환합니다.
+IntUnaryOperator의 applyAsInt를 호출해 값을 변환합니다.
+실행 결과 예시
+랜덤 값 생성:
+
+csharp
+코드 복사
+[73, 25, 86, 41, 9, 14, 58, 34, 62, 17]
+짝수 출력:
+
+csharp
+코드 복사
+[86, 14, 58, 34, 62, ]
+값 변환:
+
+csharp
+코드 복사
+[70, 20, 80, 40, 0, 10, 50, 30, 60, 10]
+코드의 주요 포인트
+프리미티브 함수형 인터페이스
+
+IntSupplier, IntConsumer, IntPredicate, IntUnaryOperator는 기본형(int)을 다룰 때 박싱/언박싱을 줄여 성능을 향상합니다.
+코드의 재사용성
+
+메서드를 제네릭화하지 않고 int에 특화된 프리미티브 인터페이스로 처리해 단순하고 효율적입니다.
+작업 흐름
+
+랜덤 배열 생성 → 조건 필터링 → 값 변환 → 출력까지 단계별로 처리.
+
+
+
+
+
+나의 말:
+public class LambdaEx7 {
+    public static void main(String[] args){
+        Function<String,Integer> f = (s) -> Integer.parseInt(s, 16);
+        Function<Integer,String> g = (i) -> Integer.toBinaryString(i);
+        
+        Function<String,String> h = f.andThen(g);
+        Function<Integer,Integer> h2 = f.compose(g);
+
+        System.out.println(h.apply("FF"));
+        System.out.println(h2.apply(2));
+        
+        Function<String,String> f2 = x -> x;
+        System.out.println(f2.apply("AAA"));
+
+        Predicate<Integer> p = i -> i < 100;
+        Predicate<Integer> q = i -> i < 200;
+        Predicate<Integer> r = i -> i%2 == 0;
+        Predicate<Integer> notP = p.negate();
+        
+        Predicate<Integer> all = notP.and(q.or(r));
+        System.out.println(all.test(150));
+        
+        String str1 = "abc";
+        String str2 = "abc";
+        
+        Predicate<String> p2 = Predicate.isEqual(str1);
+        boolean result = p2.test(str2);
+        System.out.println(result);
+     }
+}
+
+하나하나 해석해라
+ChatGPT의 말:
+ChatGPT
+LambdaEx7 클래스 코드 해석
+1. Function 인터페이스 사용
+a) Function<String, Integer> 정의
+java
+코드 복사
+Function<String, Integer> f = (s) -> Integer.parseInt(s, 16);
+입력: String 형식의 문자열.
+출력: Integer 형식의 16진수 값을 10진수로 변환.
+예) f.apply("FF") → 255 (FF는 16진수로 255에 해당).
+b) Function<Integer, String> 정의
+java
+코드 복사
+Function<Integer, String> g = (i) -> Integer.toBinaryString(i);
+입력: Integer 값.
+출력: 입력 정수를 이진수 문자열로 변환.
+예) g.apply(10) → "1010".
+c) Function<String, String> 구성
+java
+코드 복사
+Function<String, String> h = f.andThen(g);
+andThen:
+먼저 f가 실행된 후 결과값이 g로 전달됨.
+입력: String (16진수 문자열).
+출력: 이진수 문자열.
+예) h.apply("FF"):
+f.apply("FF") → 255.
+g.apply(255) → "11111111".
+d) Function<Integer, Integer> 구성
+java
+코드 복사
+Function<Integer, Integer> h2 = f.compose(g);
+compose:
+먼저 g가 실행된 후 결과값이 f로 전달됨.
+입력: Integer.
+출력: Integer.
+예) h2.apply(2):
+g.apply(2) → "10" (2의 이진수).
+f.apply("10") → 16 (16진수 "10"은 10진수로 16).
+e) 결과 출력
+java
+코드 복사
+System.out.println(h.apply("FF")); // "11111111"
+System.out.println(h2.apply(2));   // 16
+f) Function.identity()
+java
+코드 복사
+Function<String, String> f2 = x -> x;
+System.out.println(f2.apply("AAA")); // "AAA"
+**x -> x**는 입력값을 그대로 반환.
+Function.identity()로 대체 가능.
+2. Predicate 인터페이스 사용
+a) Predicate<Integer> 정의
+java
+코드 복사
+Predicate<Integer> p = i -> i < 100;
+Predicate<Integer> q = i -> i < 200;
+Predicate<Integer> r = i -> i % 2 == 0;
+p: 입력값이 100보다 작은지 검사.
+q: 입력값이 200보다 작은지 검사.
+r: 입력값이 짝수인지 검사.
+b) Predicate.negate()
+java
+코드 복사
+Predicate<Integer> notP = p.negate();
+notP: p의 반대 조건.
+입력값이 100 이상인 경우 참.
+c) Predicate 결합
+java
+코드 복사
+Predicate<Integer> all = notP.and(q.or(r));
+q.or(r):
+입력값이 200보다 작거나 짝수일 경우 참.
+notP.and(...):
+입력값이 100 이상이고, 200보다 작거나 짝수일 경우 참.
+d) 테스트 및 결과 출력
+java
+코드 복사
+System.out.println(all.test(150)); // true
+150은 notP 조건(100 이상)을 만족하고, q.or(r) 조건(200 미만)을 만족.
+3. 문자열 비교
+a) Predicate.isEqual()
+java
+코드 복사
+String str1 = "abc";
+String str2 = "abc";
+
+Predicate<String> p2 = Predicate.isEqual(str1);
+boolean result = p2.test(str2);
+System.out.println(result); // true
+Predicate.isEqual(str1):
+str1과 동일한 문자열인지 검사하는 Predicate 반환.
+p2.test(str2):
+str2가 str1과 동일하면 참.
+str1과 str2 모두 "abc"로 같으므로 true.
+최종 실행 결과
+arduino
+코드 복사
+11111111
+16
+AAA
+true
+true
+코드의 주요 포인트
+Function의 조합 사용:
+
+andThen과 compose를 사용해 함수를 순차적으로 결합 가능.
+Predicate의 논리 조합:
+
+and, or, negate를 통해 조건 논리를 효율적으로 처리.
+Predicate.isEqual 활용:
+
+특정 객체와의 동등성 비교를 쉽게 처리.
